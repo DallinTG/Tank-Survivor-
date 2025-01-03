@@ -28,6 +28,7 @@ player_relode_time:f32
 player_relode_time_v:f32=1
 player_rounds:i32=1
 player_max_rounds:i32=1
+player_fier_intervul:f32=.1
 score:i32=0
 time:f32=0
 dificulty:f32=1
@@ -160,7 +161,7 @@ init_upgrades::proc(){
         id =.regen_up_x,
         description ="REGEN UP: Increase HP Regen by 10%",
         one_time_thing = false,
-        can_be_puled = true,
+        can_be_puled = false,
         weight=5,
         icon = as.texture_names.bace_light
     }
@@ -176,7 +177,7 @@ init_upgrades::proc(){
         id =.fis_damage_up_x,
         description ="Increase Physical Damage by 10%",
         one_time_thing = false,
-        can_be_puled = true,
+        can_be_puled = false,
         weight=5,
         icon = as.texture_names.bace_light
     }
@@ -192,7 +193,7 @@ init_upgrades::proc(){
         id =.prje_damage_up_x,
         description ="Increase Projectile Damage by 10%",
         one_time_thing = false,
-        can_be_puled = true,
+        can_be_puled = false,
         weight=10,
         icon = as.texture_names.bace_light
     }
@@ -243,6 +244,7 @@ init_player::proc(){
     player_relode_time_v=1
     player_rounds=1
     player_max_rounds=1
+    player_fier_intervul=.1
     score=0
     time=0
     dificulty=1
@@ -433,10 +435,16 @@ do_player_movement::proc(){
     if rl.IsKeyDown(.S){
         speed+={player.entity.entity_type.(et_player).stats_b.speed*-1*b2.Body_GetRotation(player_body_id).c,player.entity.entity_type.(et_player).stats_b.speed*-1*b2.Body_GetRotation(player_body_id).s}
     }
-    if rl.IsKeyPressed(.SPACE){
+    if rl.IsKeyDown(.SPACE){
         if player_rounds>0{
+            if player_fier_intervul < 0{
             lonch_projectile(player_e_index,1000000,entity_id.bulet,sprite_id.bulet,light_id.bulet)
             player_rounds-=1
+            player_relode_time = player_relode_time_v
+            player_fier_intervul = 0.15
+            }
+
+            player_fier_intervul -=rl.GetFrameTime()
         }
     }
 
@@ -468,7 +476,7 @@ do_player_movement::proc(){
     player_relode_time-= rl.GetFrameTime()
     if player_relode_time<0{
         if player_rounds<player_max_rounds{
-            player_rounds+=1
+            player_rounds = player_max_rounds
             player_relode_time = player_relode_time_v
         }
 

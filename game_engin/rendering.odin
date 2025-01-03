@@ -65,9 +65,11 @@ init_maskes::proc(){
 }
 
 maintane_masks::proc(){
+
+    camera.zoom = cast(f32)(rl.GetScreenWidth())/1080 *.5
     pos:=b2.Body_GetPosition(all_entitys.data[player_e_index.id].entity.body_id)
     if !game_over{
-        camera.target = pos-{cast(f32)rl.GetScreenWidth()/2,cast(f32)rl.GetScreenHeight()/2}
+        camera.target = pos-{(cast(f32)rl.GetScreenWidth()/camera.zoom)/2,(cast(f32)rl.GetScreenHeight()/camera.zoom)/2}
     }
     this_frame_camera_target = camera.target
     screen_width:=rl.GetScreenWidth()

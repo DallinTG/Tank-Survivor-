@@ -233,6 +233,7 @@ render_gui_button_textur :: proc(gui_panel:^gui_panel,gui_button:^gui_button,t_n
 }
 draw_hud::proc(){
     //hp background
+    
     rl.DrawRectangle(10,10,255,30,{55,25,25,255})
     //hp bar
     hp_bar_fullnes:f32
@@ -244,7 +245,7 @@ draw_hud::proc(){
     }
     rl.DrawRectangle(13,13,cast(i32)(249*hp_bar_fullnes),24,{255,25,25,255})
     rl.DrawText(strings.clone_to_cstring(fmt.tprintf("HP: %v", hp)),15,15,20,{200,200,200,255})
-    rl.DrawText(strings.clone_to_cstring(fmt.tprintf("SCORE: %v", score)),270,15,20,{200,200,200,255})
+    rl.DrawText(strings.clone_to_cstring(fmt.tprintf("SCORE: %v Time: %v:%v", score, cast(i32)time/60, cast(i32)time%60)),270,15,20,{200,200,200,255})
 
     //xp background
     xp_bar_fullnes :f32=cast(f32)player_xp/ cast(f32)xp_to_next_level
@@ -253,8 +254,13 @@ draw_hud::proc(){
     rl.DrawText(strings.clone_to_cstring(fmt.tprintf("XP: %v", player_xp)),15,50,20,{200,200,200,255})
     rl.DrawText(strings.clone_to_cstring(fmt.tprintf("LV: %v", player_level)),270,50,20,{10,20,20,255})
 
+    // draw_texture(.bulet,{20,20,32,32},{0,0},-90)
+    // time
+    // rl.DrawText(strings.clone_to_cstring(fmt.tprintf("Time: %v:%v", cast(i32)time/60, cast(i32)time%60)),470,15,20,{200,200,200,255})
+
     if game_over{
         rl.DrawText("Game Over!" ,40 ,100 ,75,rl.RED)
         rl.DrawText("Press Enter  to Play Again" ,40 ,200 ,50,rl.BLACK)
     }
+    
 }
